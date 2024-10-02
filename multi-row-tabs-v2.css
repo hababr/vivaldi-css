@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2024.09.10
+ * Version 2024.10.02
  */
 
 /*******************
@@ -16,7 +16,7 @@
     /* Maximum row count after which scrollbars appear if enabled on the previous line */
     --mrt-max-rows: 2.5;
 
-    /* Hide window control buttons and stretch tabs to full window width */
+    /* Change to 'true' to hide window control buttons and stretch tabs to full window width */
     --mrt-full-width: false;
 
     /* Width of a pinned tab/stack, remove or comment out to use same size as for normal tabs */
@@ -77,6 +77,10 @@
   flex-basis: 0;
 }
 
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip > span:last-of-type {
+  margin-right: 130px;
+}
+
 #browser:is(.tabs-top, .tabs-bottom) .stack-counter {
   display: block !important;
 }
@@ -86,6 +90,7 @@
   height: fit-content;
   width: 100%;
   transform: none;
+  will-change: unset;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab-position.tab-yield-space {
@@ -95,16 +100,24 @@
   min-width: var(--mrt-min-width);
 }
 
-#browser:is(.tabs-top, .tabs-bottom) .tab-position .tab.active {
+#browser:is(.tabs-top, .tabs-bottom) .tab-position:not(.is-substack) .tab.active {
   height: calc(var(--mrt-tab-height) + 1px) !important;
   translate: 0 1px;
   margin-top: -1px;
 }
 
+#browser:is(.tabs-top, .tabs-bottom) .tab-position .tab-wrapper {
+  margin: 0;
+}
+
 #browser:is(.tabs-top, .tabs-bottom) .tab-position .tab {
   width: 100%;
   max-width: 100% !important;
-  height: var(--mrt-tab-height);
+  height: var(--mrt-tab-height) !important;
+}
+
+#browser:is(.tabs-top, .tabs-bottom) .tab-position .tab .tab-header {
+  padding-left: 6px;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab:not(.tab-accordion, .tab-in-accordion) .svg-tab-selection,
@@ -162,12 +175,14 @@
 }
 #browser:is(.tabs-top, .tabs-bottom) .tab-strip > .toolbar {
   margin-right: var(--drag-width);
+  height: var(--mrt-tab-height);
+  margin-left: -130px;
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.sync-and-trash-container,
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.subcontainer-lock {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 1px;
 }
 #browser:is(.tabs-top, .tabs-bottom) .tabbar-workspace-button {
   position: absolute;
@@ -238,6 +253,9 @@
   }
   #browser:is(.tabs-top) .tabbar-workspace-button {
     margin-left: 0 !important;
+  }
+  #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize {
+    --drag-width: var(--mrt-drag-area-width) !important;
   }
 }
 
