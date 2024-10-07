@@ -25,6 +25,9 @@
 
     /* Width of the drag area next to the plus button, you may use your mouse there to control the window */
     --mrt-drag-area-width: 30px;
+    /* If set to 'false' all empty area of the tab bar can be used to drag the window
+       Better to keep 'true' if you use tab popup thumbnails */
+    --mrt-use-drag-area: true;
 
     /* Height of a tab, probably there is no reason to change that */
     --mrt-tab-height: 30px;
@@ -288,5 +291,15 @@
   }
   #browser:is(.tabs-top) .tabbar-workspace-button {
     margin-left: var(--menuWidth);
+  }
+}
+
+@container style(--mrt-use-drag-area: false) {
+  #browser:is(.tabs-top) #tabs-container .tab-strip > .toolbar:after {
+    visibility: hidden;
+  }
+  #browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer .toolbar-tabbar.tab-position,
+  #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar {
+    flex-grow: 0;
   }
 }
