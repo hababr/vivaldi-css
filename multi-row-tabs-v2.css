@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Multiple Row Tabs v2 - Created by @hababr
  * Version 2024.10.07
  */
@@ -127,6 +127,7 @@
 #browser:is(.tabs-top, .tabs-bottom) .tab-position .tab .tab-header {
   width: 100%;
   max-width: 100%;
+  max-height: 100%;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab:not(.tab-accordion, .tab-in-accordion) .svg-tab-stack {
