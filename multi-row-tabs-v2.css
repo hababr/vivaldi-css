@@ -32,7 +32,7 @@
     /* Height of a tab, probably there is no reason to change that */
     --mrt-tab-height: 30px;
 
-    /* Display tab close buttons. 0 - disabled, 1 - on hover, 2 - permanently. Must be enabled in setting also.*/
+    /* Display tab close buttons. 0 - active tab on hover, 1 - any tab on hover, 2 - permanently. Must be enabled in setting also.*/
     --mrt-tab-close: 0;
   }
   #tabs-subcontainer {
@@ -308,7 +308,25 @@
   }
 }
 
+/* Close tab buttons */
+#browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab .favicon {
+  display: block;
+}
+#browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab .close {
+  margin-right: 6px;
+}
+@container style(--mrt-tab-close: 0) {
+  #browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab.active:hover:not(.button-off, .force-hover) .stack-counter {
+    display: none !important;
+  }
+}
 @container style(--mrt-tab-close: 1) {
+  #browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab:hover:not(.button-off, .force-hover) .stack-counter {
+    display: none !important;
+  }
+  #browser:is(.tabs-top, .tabs-bottom).alt-tabs .tab:hover .favicon {
+    display: none;
+  }
   #browser:is(.tabs-top, .tabs-bottom) .tab:hover .close,
   #browser:is(.tabs-top, .tabs-bottom) .tab.force-hover .close {
     display: flex !important;
@@ -317,5 +335,9 @@
 @container style(--mrt-tab-close: 2) {
   #browser:is(.tabs-top, .tabs-bottom) .tab .close {
     display: flex !important;
+    margin-right: 6px;
+  }
+  #browser:is(.tabs-top, .tabs-bottom) .tab .favicon {
+    display: block;
   }
 }
