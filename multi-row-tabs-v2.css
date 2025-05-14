@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2024.10.07
+ * Version 2025.05.10
  */
 
 /*******************
@@ -11,7 +11,7 @@
     --mrt-min-width: 100px;
     --mrt-max-width: 200px;
 
-    /* Change to 'true' to enable scrollbars for tabs */
+    /* Change to 'true' to enable scrollbars for tabs, looks better with 'Use Simple Scrollbars' enabled in the settings */
     --mrt-scrollbars: false;
     /* Maximum row count after which scrollbars appear if enabled on the previous line */
     --mrt-max-rows: 2.5;
@@ -23,17 +23,17 @@
     --mrt-pinned-stack-width: 60px;
     --mrt-pinned-width: 30px;
 
-    /* Width of the drag area next to the plus button, you may use your mouse there to control the window */
+    /* Width of the drag area next to the plus button, can be used to control the window */
     --mrt-drag-area-width: 30px;
-    /* If set to 'false' all empty area of the tab bar can be used to drag the window
-       Better to keep 'true' if you use tab popup thumbnails */
-    --mrt-use-drag-area: true;
 
-    /* Height of a tab, probably there is no reason to change that */
+    /* Height of a tab */
     --mrt-tab-height: 30px;
 
-    /* Display tab close buttons. 0 - active tab on hover, 1 - any tab on hover, 2 - permanently. Must be enabled in setting also.*/
-    --mrt-tab-close: 0;
+    /* Display tab close buttons. 1 - on hover, 2 - permanently. Must be enabled in setting also.*/
+    --mrt-tab-close: 1;
+
+    /* Width of the Workspace button */
+    --mrt-workspace-button-width: 100px;
   }
   #tabs-subcontainer {
     /* Width of tabs inside a tab stack */
@@ -44,19 +44,49 @@
 
 #browser:is(.tabs-top, .tabs-bottom) {
   --mrt-first-tab-margin: 0px;
-  --mrt-workspace-button-width: 52px;
+}
+
+#browser:is(.tabs-top, .tabs-bottom) .window-buttongroup button {
+    height: 100% !important;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container {
   height: auto !important;
 }
 
+#browser:is(.tabs-top, .tabs-bottom) #header {
+  min-height: var(--mrt-tab-height) !important;
+}
+#browser:is(.tabs-top, .tabs-bottom) #titlebar > * {
+  height: var(--mrt-tab-height);
+}
+
+#browser:is(.tabs-top, .tabs-bottom) #titlebar .vivaldi {
+  left: 1px;
+}
+#browser:is(.tabs-top, .tabs-bottom).density-on #titlebar .vivaldi {
+  left: var(--densityGap);
+}
+
+/* Margin for the first tab */
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container.top {
+  padding-left: 0;
+  --mrt-first-tab-margin: calc(var(--menuWidth) + 2px);
+}
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.tabbar-workspace-button) {
   --mrt-first-tab-margin: var(--mrt-workspace-button-width);
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container.top:has(.tabbar-workspace-button) {
+  --mrt-first-tab-margin: calc(var(--menuWidth) + var(--mrt-workspace-button-width) + var(--densityGap));
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > :first-child {
+  margin-left: var(--mrt-first-tab-margin);
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer {
   flex-basis: unset !important;
+  min-height: var(--mrt-tab-height);
+  -webkit-app-region: no-drag !important;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab-strip {
@@ -64,7 +94,27 @@
   flex-wrap: wrap;
   column-gap: 1px;
   row-gap: 1px;
+  -webkit-app-region: no-drag;
+  align-content: flex-start;
+}
+
+#browser:is(.tabs-top, .tabs-bottom):not(.density-on) .tab-strip {
   padding-bottom: 1px;
+}
+
+#browser:is(.tabs-top, .tabs-bottom).density-on .tab-strip {
+  column-gap: var(--densityGap);
+  row-gap: var(--densityGap);
+  padding-left: var(--densityGap);
+  padding-right: var(--densityGap);
+}
+
+#browser:is(.tabs-top, .tabs-bottom).density-on:has(#tabs-subcontainer) #tabs-container .tab-strip {
+    padding-bottom: var(--densityGap);
+}
+
+#browser:is(.tabs-top, .tabs-bottom).density-on.maximized #tabs-container .tab-strip {
+  row-gap: calc(2 * var(--densityGap) + 1px);
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container,
@@ -72,7 +122,12 @@
   padding-bottom: 0 !important;
 }
 
-#browser:is(.tabs-top, .tabs-bottom) .tab-strip > span {
+#browser:is(.tabs-top, .tabs-bottom):not(.density-on) #tabs-subcontainer {
+  padding-top: 0px;
+  border-top: 1px solid var(--colorAccentFgFaded);
+}
+
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip > :is(span, .tab-yield-space) {
   min-width: var(--mrt-min-width);
   width: auto;
   display: inline-block;
@@ -80,11 +135,22 @@
   height: fit-content;
   max-width: var(--mrt-max-width);
   flex-grow: 10;
-  flex-basis: 0;
+  flex-basis: var(--mrt-min-width);
+  -webkit-app-region: no-drag;
 }
 
-#browser:is(.tabs-top, .tabs-bottom) .tab-strip > span:last-of-type {
-  margin-right: 130px;
+/* Avoid tabs jumping around while dragging a tab */
+#browser:is(.tabs-top, .tabs-bottom).no-app-dragging .tab-strip:not(:has(.tab-yield-space)) > span:last-of-type {
+  min-width: calc(var(--mrt-min-width) * 2);
+  max-width: var(--mrt-max-width);
+}
+
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip > :is(span:last-of-type:not(:has(+ .tab-yield-space)), .tab-yield-space:not(:has(+ span))) {
+  margin-right: calc(var(--drag-width) + 40px);
+}
+
+#browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer .tab-strip > :is(span:last-of-type:not(:has(+ .tab-yield-space)), .tab-yield-space:not(:has(+ span))) {
+  margin-right: 61px;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .stack-counter {
@@ -92,7 +158,7 @@
 }
 
 #browser:is(.tabs-top, .tabs-bottom) span > .tab-position {
-  position: relative;
+  position: relative !important;
   height: fit-content;
   width: 100%;
   transform: none;
@@ -106,7 +172,7 @@
   min-width: var(--mrt-min-width);
 }
 
-#browser:is(.tabs-top, .tabs-bottom) .tab-position:not(.is-substack) .tab.active {
+#browser:is(.tabs-top, .tabs-bottom):not(.density-on) .tab-position:not(.is-substack) .tab.active {
   height: calc(var(--mrt-tab-height) + 1px) !important;
   translate: 0 1px;
   margin-top: -1px;
@@ -148,7 +214,12 @@
   min-width: var(--mrt-pinned-stack-width, --mrt-min-width);
 }
 
-#browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar {
+/* Hide horizontal scrolling buttons */
+#browser:is(.tabs-top, .tabs-bottom) .button-toolbar.horizontal-scroll-arrow {
+    display: none;
+}
+
+#browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.tab-position {
   position: relative;
   transform: none;
   flex-grow: 1;
@@ -156,15 +227,11 @@
   min-width: fit-content;
 }
 
-#browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer .toolbar-tabbar.tab-position {
-  flex-grow: 1;
-  margin-right: 30px;
-}
-
-#browser:is(.tabs-top, .tabs-bottom) .button-toolbar {
+#browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar .button-toolbar {
   position: relative;
   left: unset !important;
   top: unset !important;
+  height: var(--mrt-tab-height);
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab.tab-small.tab-mini .tab-header {
@@ -179,30 +246,39 @@
 /* Float toolbars */
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container {
   position: relative;
+  min-height: var(--mrt-tab-height);
 }
 #browser:is(.tabs-top, .tabs-bottom) .tab-strip > .toolbar {
-  margin-right: var(--drag-width);
-  height: var(--mrt-tab-height);
-  margin-left: -130px;
+  height: var(--mrt-tab-height) !important;
+  -webkit-app-region: drag;
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > .toolbar {
+  margin-left: calc(-1 * var(--drag-width) - 40px);
+  padding-right: var(--drag-width);
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer .tab-strip > .toolbar {
+  margin-left: -61px;
+  padding-right: 30px;
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.sync-and-trash-container,
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.subcontainer-lock {
   position: absolute;
   right: 0;
   bottom: 1px;
+  height: var(--mrt-tab-height);
 }
 #browser:is(.tabs-top, .tabs-bottom) .tabbar-workspace-button {
   position: absolute;
+  width: var(--mrt-workspace-button-width);
+  height: var(--mrt-tab-height);
+  min-width: 60px;
+  max-width: unset;
   top: 0 !important;
   margin-left: 0;
   z-index: 1;
 }
-.tabbar-workspace-button .button-title {
-  display: none !important;
-}
-
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > :first-child {
-  margin-left: var(--mrt-first-tab-margin);
+#browser:is(.tabs-top) .tabbar-workspace-button {
+  margin-left: calc(var(--menuWidth) + var(--densityGap) * 2);
 }
 
 /* To be able to drag the window need to add a margin to the right from the plus button. Its width depends on other buttons presence */
@@ -211,6 +287,7 @@
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize {
   --drag-width: var(--mrt-drag-area-width);
+  padding-left: 1px;
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize:has(.button-toolbar.toggle-trash:not(.hidden), .button-toolbar.synced-tabs-button) {
   --drag-width: calc(var(--mrt-drag-area-width) + 30px);
@@ -218,20 +295,13 @@
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize:has(.button-toolbar.toggle-trash:not(.hidden)):has(.button-toolbar.synced-tabs-button) {
   --drag-width: calc(var(--mrt-drag-area-width) + 2 * 30px);
 }
-#browser:is(.tabs-top) #tabs-container .tab-strip > .toolbar:after {
-    content: '⇵';
-    width: var(--mrt-drag-area-width);
-    height: calc(100% - 2px);
-    right: calc(-1 * var(--mrt-drag-area-width));
-    font-size: 16px;
-    opacity: .5;
-    text-overflow: ellipsis;
-    position: absolute;
-    background-color: var(--colorAccentBgAlphaHeavy);
-    border-radius: var(--currentRadius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+/* Disable window dragging while a tab tooltip is visible */
+#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) > #header,
+#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .button-toolbar button,
+#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .button-toolbar,
+#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .tab-strip > .toolbar {
+  -webkit-app-region: no-drag !important;
 }
 
 /* Scrollbars enabled */
@@ -271,40 +341,13 @@
   #browser:is(.tabs-top, .tabs-bottom) .window-buttongroup {
     display: none !important;
   }
-  #browser:is(.tabs-top, .tabs-bottom) #tabs-container,
-  #browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer {
-    padding-bottom: 0 !important;
-    padding-right: 0 !important;
-  }
   #browser:is(.tabs-top, .tabs-bottom) #tabs-container.top {
-    padding-right: 0 !important;
+    padding-right: 1px !important;
   }
   #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.sync-and-trash-container {
     position: absolute;
     right: 0;
     bottom: 0;
-  }
-  #browser:is(.tabs-top, .tabs-bottom) #tabs-container.top {
-    padding-left: 0;
-  }
-  #browser:is(.tabs-top, .tabs-bottom) #tabs-container.top {
-    --mrt-first-tab-margin: var(--menuWidth);
-  }
-  #browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.tabbar-workspace-button).top {
-    --mrt-first-tab-margin: calc(var(--menuWidth) + var(--mrt-workspace-button-width));
-  }
-  #browser:is(.tabs-top) .tabbar-workspace-button {
-    margin-left: var(--menuWidth);
-  }
-}
-
-@container style(--mrt-use-drag-area: false) {
-  #browser:is(.tabs-top) #tabs-container .tab-strip > .toolbar:after {
-    visibility: hidden;
-  }
-  #browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer .toolbar-tabbar.tab-position,
-  #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar {
-    flex-grow: 0;
   }
 }
 
@@ -315,25 +358,19 @@
 #browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab .close {
   margin-right: 6px;
 }
-@container style(--mrt-tab-close: 0) {
-  #browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab.active:hover:not(.button-off, .force-hover) .stack-counter {
-    display: none !important;
-  }
-}
 @container style(--mrt-tab-close: 1) {
-  #browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab:hover:not(.button-off, .force-hover) .stack-counter {
+  #browser:is(.tabs-top, .tabs-bottom):not(.alt-tabs) .tab:is(:hover, .force-hover):not(.button-off, .force-hover, .pinned) .stack-counter {
     display: none !important;
   }
-  #browser:is(.tabs-top, .tabs-bottom).alt-tabs .tab:hover .favicon {
+  #browser:is(.tabs-top, .tabs-bottom).alt-tabs .tab:is(:hover, .force-hover):not(.pinned) .favicon {
     display: none;
   }
-  #browser:is(.tabs-top, .tabs-bottom) .tab:hover .close,
-  #browser:is(.tabs-top, .tabs-bottom) .tab.force-hover .close {
+  #browser:is(.tabs-top, .tabs-bottom) .tab:is(:hover, .force-hover):not(.pinned) .close {
     display: flex !important;
   }
 }
 @container style(--mrt-tab-close: 2) {
-  #browser:is(.tabs-top, .tabs-bottom) .tab .close {
+  #browser:is(.tabs-top, .tabs-bottom) .tab:not(.pinned) .close {
     display: flex !important;
     margin-right: 6px;
   }
