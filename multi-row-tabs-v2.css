@@ -51,7 +51,10 @@
 #browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container {
   height: auto !important;
 }
-
+#browser.tabs-top.density-on #tabs-tabbar-container {
+  padding-top: var(--densityGap);
+  padding-bottom: var(--densityGap);
+}
 #browser:is(.tabs-top, .tabs-bottom) #header {
   min-height: var(--mrt-tab-height) !important;
 }
@@ -65,16 +68,18 @@
 #browser:is(.tabs-top, .tabs-bottom).density-on #titlebar .vivaldi {
   left: var(--densityGap);
 }
-
+#browser:is(.tabs-top, .tabs-bottom).density-on #titlebar .vivaldi {
+  margin-top: var(--densityGap);
+}
 /* Margin for the first tab */
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container.top {
+#browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #tabs-container.top {
   padding-left: 0;
   --mrt-first-tab-margin: calc(var(--menuWidth) + 2px);
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.tabbar-workspace-button) {
   --mrt-first-tab-margin: var(--mrt-workspace-button-width);
 }
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container.top:has(.tabbar-workspace-button) {
+#browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #tabs-container.top:has(.tabbar-workspace-button) {
   --mrt-first-tab-margin: calc(var(--menuWidth) + var(--mrt-workspace-button-width) + var(--densityGap));
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > :first-child {
@@ -84,10 +89,21 @@
 #browser:is(.tabs-top, .tabs-bottom) #header .tabbar-wrapper {
   z-index: 0;
 }
+#browser.tabs-top.maximized:not(.mac, .tabs-at-edge) .tab-wrapper::before {
+  height: var(--densityGap) !important;
+  top: calc(-1 * var(--densityGap)) !important;
+}
+#browser.tabs-top.density-on .tab-wrapper:after {
+  height: var(--densityGap) !important;
+  bottom: calc(-1 * var(--densityGap)) !important;
+}
 #browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer {
   flex-basis: unset !important;
   min-height: var(--mrt-tab-height);
   -webkit-app-region: no-drag !important;
+}
+#browser.tabs-top.horizontal-menu.win .topmenu {
+  margin-bottom: 4px;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab-strip {
@@ -107,8 +123,8 @@
 #browser:is(.tabs-top, .tabs-bottom).density-on .tab-strip {
   column-gap: var(--densityGap);
   row-gap: var(--densityGap);
-  padding-left: var(--densityGap);
-  padding-right: var(--densityGap);
+  /* padding-left: var(--densityGap); */
+  /* padding-right: var(--densityGap); */
 }
 
 #browser:is(.tabs-top, .tabs-bottom).density-on:has(#tabs-subcontainer) #tabs-container .tab-strip {
@@ -116,7 +132,7 @@
 }
 
 #browser:is(.tabs-top, .tabs-bottom).density-on.maximized #tabs-container .tab-strip {
-  row-gap: calc(2 * var(--densityGap) + 1px);
+  row-gap: var(--densityGap);
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container,
@@ -287,7 +303,7 @@
 #browser:is(.tabs-top, .tabs-bottom) .toolbar .tabbar-workspace-button {
   height: var(--mrt-tab-height);
 }
-#browser:is(.tabs-top) .tabbar-workspace-button {
+#browser:is(.tabs-top):not(.horizontal-menu) .tabbar-workspace-button {
   margin-left: calc(var(--menuWidth) + var(--densityGap) * 2);
 }
 #browser.tabs-top #tabs-container .toolbar-tabbar-after {
@@ -305,6 +321,7 @@
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize {
   padding-left: 1px;
   margin-right: 0;
+  max-width: unset !important;
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.button-toolbar.toggle-trash:not(.hidden), .button-toolbar.synced-tabs-button) {
   --mrt-toolbar-width-full: calc(var(--mrt-toolbar-width) + 31px);
