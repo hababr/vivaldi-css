@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2025.07.05
+ * Version 2025.07.11
  */
 
 /*******************
@@ -55,13 +55,12 @@
   padding-top: var(--densityGap);
   padding-bottom: var(--densityGap);
 }
-#browser:is(.tabs-top, .tabs-bottom) #header {
-  min-height: var(--mrt-tab-height) !important;
+#browser.tabs-top.address-top.win:not(.fullscreen, .disable-titlebar) #header {
+    min-height: calc((var(--mrt-tab-height) + var(--densityGap) * 2) / var(--uiZoomLevel));
 }
-#browser:is(.tabs-top, .tabs-bottom) #titlebar > * {
-  height: var(--mrt-tab-height);
+#browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #titlebar > * {
+    height: var(--mrt-tab-height);
 }
-
 #browser:is(.tabs-top, .tabs-bottom) #titlebar .vivaldi {
   left: 1px;
 }
@@ -309,6 +308,16 @@
 #browser.tabs-top #tabs-container .toolbar-tabbar-after {
   margin-left: calc(-1 * var(--mrt-toolbar-width-full) - 0px);
   padding-right: 0;
+}
+#browser:is(.tabs-top).density-on:has(#tabs-subcontainer) #tabs-container .toolbar-tabbar-after {
+    padding-bottom: var(--densityGap);
+}
+#browser:is(.tabs-top) #header .toolbar button {
+  height: var(--mrt-tab-height);
+  min-height: unset;
+}
+#browser:is(.tabs-top).density-on #tabs-subcontainer .toolbar {
+  bottom: calc(var(--densityGap) * 2);
 }
 
 /* To be able to drag the window need to add a margin to the right from the plus button. Its width depends on other buttons presence */
