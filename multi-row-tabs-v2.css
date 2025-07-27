@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2025.07.11
+ * Version 2025.07.27
  */
 
 /*******************
@@ -11,7 +11,8 @@
     --mrt-min-width: 100px;
     --mrt-max-width: 200px;
 
-    /* Change to 'true' to enable scrollbars for tabs, looks better with 'Use Simple Scrollbars' enabled in the settings */
+    /* Change to 'true' to enable scrollbars for tabs
+       Works better with 'Use Simple Scrollbars' enabled and 'Switch Tabs by Scrolling' disabled in Vivaldi settings */
     --mrt-scrollbars: false;
     /* Maximum row count after which scrollbars appear if enabled on the previous line */
     --mrt-max-rows: 2.5;
@@ -41,7 +42,7 @@
 
 #browser:is(.tabs-top, .tabs-bottom) {
   --mrt-first-tab-margin: 0px;
-  --mrt-toolbar-width: 61px;
+  --mrt-toolbar-width: calc(61px + var(--densityGap));
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .window-buttongroup button {
@@ -54,6 +55,9 @@
 #browser.tabs-top.density-on #tabs-tabbar-container {
   padding-top: var(--densityGap);
   padding-bottom: var(--densityGap);
+}
+#browser.tabs-top.density-on #tabs-tabbar-container:has(#tabs-subcontainer) {
+  padding-bottom: 0;
 }
 #browser.tabs-top.address-top.win:not(.fullscreen, .disable-titlebar) #header {
     min-height: calc((var(--mrt-tab-height) + var(--densityGap) * 2) / var(--uiZoomLevel));
@@ -115,19 +119,18 @@
   align-content: flex-start;
 }
 
-#browser:is(.tabs-top, .tabs-bottom):not(.density-on) .tab-strip {
+#browser:is(.tabs-top):not(.density-on) .tab-strip {
   padding-bottom: 1px;
 }
 
 #browser:is(.tabs-top, .tabs-bottom).density-on .tab-strip {
   column-gap: var(--densityGap);
   row-gap: var(--densityGap);
-  /* padding-left: var(--densityGap); */
-  /* padding-right: var(--densityGap); */
+   padding-right: var(--densityGap);
 }
 
-#browser:is(.tabs-top, .tabs-bottom).density-on:has(#tabs-subcontainer) #tabs-container .tab-strip {
-    padding-bottom: var(--densityGap);
+#browser:is(.tabs-top).density-on:has(#tabs-subcontainer) #tabs-container .tab-strip {
+  padding-bottom: var(--densityGap);
 }
 
 #browser:is(.tabs-top, .tabs-bottom).density-on.maximized #tabs-container .tab-strip {
@@ -139,9 +142,13 @@
   padding-bottom: 0 !important;
 }
 
-#browser:is(.tabs-top, .tabs-bottom):not(.density-on) #tabs-subcontainer {
+#browser:is(.tabs-top):not(.density-on) #tabs-subcontainer {
   padding-top: 0px;
   border-top: 1px solid var(--colorAccentFgFaded);
+}
+#browser:is(.tabs-bottom):not(.density-on) #tabs-subcontainer {
+  padding-bottom: 0px;
+  border-bottom: 1px solid var(--colorAccentFgFaded);
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab-strip > :is(span, .tab-yield-space) {
@@ -289,8 +296,8 @@
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.subcontainer-lock {
   position: absolute;
-  right: 0;
-  bottom: 1px;
+  right: calc(var(--densityGap) * 2);
+  bottom: var(--densityGap);
   height: var(--mrt-tab-height);
   flex-wrap: nowrap;
   min-width: max-content;
@@ -317,7 +324,7 @@
   min-height: unset;
 }
 #browser:is(.tabs-top).density-on #tabs-subcontainer .toolbar {
-  bottom: calc(var(--densityGap) * 2);
+  bottom: calc(var(--densityGap) * 1);
 }
 
 /* To be able to drag the window need to add a margin to the right from the plus button. Its width depends on other buttons presence */
@@ -333,10 +340,10 @@
   max-width: unset !important;
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.button-toolbar.toggle-trash:not(.hidden), .button-toolbar.synced-tabs-button) {
-  --mrt-toolbar-width-full: calc(var(--mrt-toolbar-width) + 31px);
+  --mrt-toolbar-width-full: calc(var(--mrt-toolbar-width) + 31px + var(--densityGap));
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.button-toolbar.toggle-trash:not(.hidden)):has(.button-toolbar.synced-tabs-button) {
-  --mrt-toolbar-width-full: calc(var(--mrt-toolbar-width) + 62px);
+  --mrt-toolbar-width-full: calc(var(--mrt-toolbar-width) + 62px + var(--densityGap));
 }
 
 /* Disable window dragging while a tab tooltip is visible */
@@ -344,6 +351,7 @@
 #browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .button-toolbar button,
 #browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .button-toolbar,
 #browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) #tabs-container .tab-strip:after,
+#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .tab-strip,
 #browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .tab-strip > .toolbar {
   -webkit-app-region: no-drag !important;
 }
