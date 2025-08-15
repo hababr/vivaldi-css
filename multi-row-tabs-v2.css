@@ -21,8 +21,9 @@
     --mrt-full-width: false;
 
     /* Width of a pinned tab/stack, remove or comment out to use same size as for normal tabs */
-    --mrt-pinned-stack-width: 60px;
     --mrt-pinned-width: 30px;
+    --mrt-pinned-stack-width: 60px;
+    --mrt-pinned-extended-accordion-width: 90px;
 
     /* Height of a tab */
     --mrt-tab-height: 30px;
@@ -31,10 +32,10 @@
     --mrt-tab-close: 1;
 
     /* Width of the Workspace button */
-    --mrt-workspace-button-width: 100px;
+    --mrt-workspace-button-width: 130px;
   }
   #tabs-subcontainer {
-    /* Width of tabs inside a tab stack */
+    /* Width of tabs inside of the second level tab bar */
     --mrt-min-width: 150px;
     --mrt-max-width: 300px;
   }
@@ -74,6 +75,7 @@
 #browser:is(.tabs-top, .tabs-bottom).density-on #titlebar .vivaldi {
   margin-top: var(--densityGap);
 }
+
 /* Margin for the first tab */
 #browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #tabs-container.top {
   padding-left: 0;
@@ -85,16 +87,19 @@
 #browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #tabs-container.top:has(.tabbar-workspace-button) {
   --mrt-first-tab-margin: calc(var(--menuWidth) + var(--mrt-workspace-button-width) + var(--densityGap));
 }
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > :first-child {
-  margin-left: var(--mrt-first-tab-margin);
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip:before {
+  content: '';
+  width: var(--mrt-first-tab-margin);
+  display: block;
+  app-region: no-drag;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #header .tabbar-wrapper {
   z-index: 0;
 }
 #browser.tabs-top.maximized:not(.mac, .tabs-at-edge) .tab-wrapper::before {
-  height: var(--densityGap) !important;
-  top: calc(-1 * var(--densityGap)) !important;
+  height: calc(2 * var(--densityGap)) !important;
+  top: calc(-2 * var(--densityGap)) !important;
 }
 #browser.tabs-top.density-on .tab-wrapper:after {
   height: var(--densityGap) !important;
@@ -115,7 +120,7 @@
   flex-grow: 1;
   column-gap: 1px;
   row-gap: 1px;
-  -webkit-app-region: no-drag;
+  -webkit-app-region: drag;
   align-content: flex-start;
 }
 
@@ -126,7 +131,10 @@
 #browser:is(.tabs-top, .tabs-bottom).density-on .tab-strip {
   column-gap: var(--densityGap);
   row-gap: var(--densityGap);
-   padding-right: var(--densityGap);
+}
+
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip {
+  padding-right: calc(var(--densityGap, 0px) + 2px);
 }
 
 #browser:is(.tabs-top).density-on:has(#tabs-subcontainer) #tabs-container .tab-strip {
@@ -151,6 +159,19 @@
   border-bottom: 1px solid var(--colorAccentFgFaded);
 }
 
+#browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container.top.dotted #tabs-container .tab-strip > span {
+  margin-top: 5px;
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container.bottom.dotted #tabs-container .tab-strip > span {
+  margin-bottom: 5px;
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container.top.dotted #tabs-container .tab-strip {
+  margin-top: -5px;
+}
+#browser:is(.tabs-top, .tabs-bottom).density-on #tabs-tabbar-container.top.dotted #tabs-container .tab-strip {
+  margin-top: -2px;
+}
+
 #browser:is(.tabs-top, .tabs-bottom) .tab-strip > :is(span, .tab-yield-space) {
   min-width: var(--mrt-min-width);
   width: auto;
@@ -168,8 +189,14 @@
   min-width: calc(var(--mrt-min-width) * 2);
   max-width: var(--mrt-max-width);
 }
-
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > :is(span:last-of-type:not(:has(+ .tab-yield-space)), .tab-yield-space:not(:has(+ span))) {
+  margin-right: calc(var(--mrt-toolbar-width-full) + 2px);
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:last-of-type:has(+ .accordion-toggle-arrow) {
+  margin-right: calc(var(--mrt-toolbar-width-full) + 3px + 16px + var(--densityGap));
+}
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:last-of-type + .accordion-toggle-arrow {
+  margin-left: calc(-1 * var(--mrt-toolbar-width-full) - 3px - 16px - var(--densityGap));
   margin-right: calc(var(--mrt-toolbar-width-full) + 2px);
 }
 
@@ -196,14 +223,27 @@
   min-width: var(--mrt-min-width);
 }
 
-#browser:is(.tabs-top, .tabs-bottom):not(.density-on) .tab-position:not(.is-substack) .tab.active {
+#browser:is(.tabs-top):not(.density-on) .tab-position:not(.is-substack) .tab.active:not(.tab-in-accordion, .tab-accordion) {
   height: calc(var(--mrt-tab-height) + 1px) !important;
   translate: 0 1px;
   margin-top: -1px;
 }
+#browser:is(.tabs-bottom):not(.density-on) #tabs-tabbar-container #tabs-container .tab.active.tab-in-accordion {
+  top: 0 !important;
+  padding-top: 0;
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip .tab.active:is(.tab-in-accordion, .tab-accordion):before,
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip .tab.active:is(.tab-in-accordion, .tab-accordion):after {
+  opacity: 0;
+}
+#browser:is(.tabs-bottom) #tabs-tabbar-container:not(:has(#tabs-subcontainer)) #tabs-container .tab.active.tab-accordion {
+  padding-top: 0;
+  top: 0 !important;
+}
 
 #browser:is(.tabs-top, .tabs-bottom) .tab-position .tab-wrapper {
   margin: 0;
+  max-height: unset;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab-position .tab {
@@ -216,12 +256,13 @@
   padding-left: 6px;
 }
 
-#browser:is(.tabs-top, .tabs-bottom) .tab:not(.tab-accordion, .tab-in-accordion) ~ .svg-tab-selection,
-#browser:is(.tabs-top, .tabs-bottom) .tab:not(.tab-accordion, .tab-in-accordion) .svg-tab-selection,
+#browser:is(.tabs-top, .tabs-bottom) .svg-tab-selection,
 #browser:is(.tabs-top, .tabs-bottom) .tab-position .tab .tab-header {
-  width: 100%;
+  width: 100% !important;
   max-width: 100%;
   max-height: 100%;
+  flex-basis: 100%;
+  z-index: 20;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab:not(.tab-accordion, .tab-in-accordion) ~ .svg-tab-stack,
@@ -230,14 +271,19 @@
   width: 100%;
 }
 
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:has(> .is-pinned:not(.is-substack)) {
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:has(> .is-pinned) {
   max-width: var(--mrt-pinned-width, var(--mrt-max-width));
   min-width: var(--mrt-pinned-width, var(--mrt-min-width));
 }
 
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:has(> .is-pinned.is-substack) {
-  max-width: var(--mrt-pinned-stack-width, --mrt-max-width);
-  min-width: var(--mrt-pinned-stack-width, --mrt-min-width);
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:has(> .is-pinned.is-substack, > .is-pinned .accordion, > .is-pinned .group) {
+  max-width: var(--mrt-pinned-stack-width, var(--mrt-max-width));
+  min-width: var(--mrt-pinned-stack-width, var(--mrt-min-width));
+}
+
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:has(.is-pinned .extended.in-accordion) {
+  max-width: var(--mrt-pinned-extended-accordion-width);
+  min-width: var(--mrt-pinned-extended-accordion-width);
 }
 
 /* Hide horizontal scrolling buttons */
@@ -268,6 +314,13 @@
 #browser:is(.tabs-top, .tabs-bottom) .tab .tab-header .title {
   display: flex !important;
 }
+#browser:is(.tabs-top, .tabs-bottom) .tab-position:not(.is-substack) .tab-wrapper:not(.extended.in-accordion) .tab.pinned:not(.tab-accordion) .tab-header .title {
+  display: none !important;
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-position:not(.is-substack) .tab-wrapper:not(.extended.in-accordion) .tab.pinned:not(.tab-accordion) .tab-header {
+  padding: 0;
+  justify-content: center;
+}
 
 /* Float toolbars */
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container {
@@ -295,13 +348,14 @@
   margin-right: calc(-1 * var(--mrt-first-tab-margin));
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.subcontainer-lock {
-  position: absolute;
-  right: calc(var(--densityGap) * 2);
-  bottom: var(--densityGap);
   height: var(--mrt-tab-height);
   flex-wrap: nowrap;
   min-width: max-content;
   flex-grow: 0;
+  margin-left: -59px;
+}
+#browser:is(.tabs-top, .tabs-bottom):not(.density-on) .toolbar-tabbar.subcontainer-lock {
+  margin-bottom: 1px;
 }
 #browser:is(.tabs-top, .tabs-bottom) .tabbar-workspace-button {
   width: var(--mrt-workspace-button-width);
@@ -312,9 +366,16 @@
 #browser:is(.tabs-top):not(.horizontal-menu) .tabbar-workspace-button {
   margin-left: calc(var(--menuWidth) + var(--densityGap) * 2);
 }
-#browser.tabs-top #tabs-container .toolbar-tabbar-after {
+#browser:is(.tabs-top, .tabs-bottom) #tabs-container .toolbar-tabbar-after {
   margin-left: calc(-1 * var(--mrt-toolbar-width-full) - 0px);
   padding-right: 0;
+  align-items: flex-end;
+}
+#browser:is(.tabs-top):not(.density-on) #tabs-container .toolbar-tabbar-after {
+  margin-bottom: 1px;
+}
+#browser:is(.tabs-bottom) #tabs-container .toolbar-tabbar-after {
+    margin-bottom: 0px;
 }
 #browser:is(.tabs-top).density-on:has(#tabs-subcontainer) #tabs-container .toolbar-tabbar-after {
     padding-bottom: var(--densityGap);
@@ -323,14 +384,90 @@
   height: var(--mrt-tab-height);
   min-height: unset;
 }
+#browser:is(.tabs-top) #tabs-subcontainer .toolbar button {
+  height: calc(var(--mrt-tab-height) - 1px);
+}
 #browser:is(.tabs-top).density-on #tabs-subcontainer .toolbar {
-  bottom: calc(var(--densityGap) * 1);
+  margin-bottom: var(--densityGap);
+}
+#browser:is(.tabs-bottom).density-on #tabs-subcontainer .toolbar {
+  margin-top: var(--densityGap);
+}
+
+/* Accordion tab stacks */
+#browser:is(.tabs-top, .tabs-bottom).accordion-tabs-on .svg-tab-stack {
+  display: none;
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip > .accordion-toggle-arrow {
+  height: fit-content;
+  position: relative;
+  transform: none;
+  height: var(--mrt-tab-height);
+}
+#browser:is(.tabs-top, .tabs-bottom) span:has(.tab-in-accordion, .tab-accordion) .tab-position:before {
+  height: 100%;
+  border: 2px solid var(--stackColorBg, var(--colorBgAlpha));
+  content: "";
+  position: absolute;
+  width: calc(100% + max(3px, var(--densityGap)));
+  z-index: 10;
+  border-right: none;
+  border-left: none;
+  border-radius: 0px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+#browser:is(.tabs-top, .tabs-bottom) span:has(.tab-in-accordion.tab-first-in-group, .tab-accordion) .tab-position:before {
+  border-left: 2px solid var(--stackColorBg, var(--colorBgAlpha));
+  border-top-left-radius: var(--currentRadius);
+  border-bottom-left-radius: var(--currentRadius);
+}
+#browser:is(.tabs-top, .tabs-bottom) span:has(.tab-in-accordion.tab-last-in-group, .tab-accordion):not(:has(+ .accordion-toggle-arrow)) .tab-position:before {
+  border-right: 2px solid var(--stackColorBg, var(--colorBgAlpha));
+  border-top-right-radius: var(--currentRadius);
+  border-bottom-right-radius: var(--currentRadius);
+  width: calc(100%);
+}
+#browser:is(.tabs-top, .tabs-bottom) span:has(.tab-in-accordion.tab-last-in-group, .tab-accordion):not(:has(+ .accordion-toggle-arrow)) .tab {
+  border-radius: var(--currentRadius);
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-accordion.active, #browser:is(.tabs-top, .tabs-bottom) .tab-in-accordion.tab-first-in-group {
+  border-top-left-radius: var(--currentRadius);
+  border-bottom-left-radius: var(--currentRadius);
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip .accordion-toggle-arrow {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 16px;
+  min-width: unset;
+  display: flex;
+  margin-left: calc(-16px - max(2px, 2 * var(--densityGap)));
+  border: 2px solid var(--colorBgAlpha) !important;
+  border-left: none !important;
+  justify-content: center;
+  border-top-right-radius: var(--currentRadius);
+  border-bottom-right-radius: var(--currentRadius);
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip .accordion-toggle-arrow.colored {
+  border-color: var(--stackColorBg) !important;
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip .accordion-toggle-arrow.colored:not(:hover) {
+  background: var(--stackColorBg);
+}
+#browser.tabs-top .tab-position.colored .tab-wrapper.accordion .tab,
+#browser.tabs-top .tab-position.colored .tab-wrapper.in-accordion .tab,
+#browser.tabs-bottom .tab-position.colored .tab-wrapper.accordion .tab,
+#browser.tabs-bottom .tab-position.colored .tab-wrapper.in-accordion .tab {
+    box-shadow: 3px 0 0 var(--stackColorBg);
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip .accordion-toggle-arrow.expanded {
+  justify-content: flex-start;
+}
+#browser:is(.tabs-top, .tabs-bottom) .tab-strip span:has(+ .accordion-toggle-arrow) {
+  margin-right: calc(16px + max(2px, var(--densityGap) * 2));
 }
 
 /* To be able to drag the window need to add a margin to the right from the plus button. Its width depends on other buttons presence */
-#browser:is(.tabs-bottom) {
-  --mrt-toolbar-width: 0px;
-}
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container {
   --mrt-toolbar-width-full: var(--mrt-toolbar-width);
 }
