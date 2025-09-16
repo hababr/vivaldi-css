@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2025.08.15
+ * Version 2025.09.15
  */
 
 /*******************
@@ -42,8 +42,8 @@
 /******************/
 
 #browser:is(.tabs-top, .tabs-bottom) {
-  --mrt-first-tab-margin: 0px;
-  --mrt-toolbar-width: calc(61px + var(--densityGap));
+  --mrt-toolbar-before-width: 0px;
+  --mrt-toolbar-after-width: 0px;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .window-buttongroup button {
@@ -79,19 +79,12 @@
 /* Margin for the first tab */
 #browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #tabs-container.top {
   padding-left: 0;
-  --mrt-first-tab-margin: calc(var(--menuWidth) + 2px);
-}
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.tabbar-workspace-button) {
-  --mrt-first-tab-margin: var(--mrt-workspace-button-width);
-}
-#browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #tabs-container.top:has(.tabbar-workspace-button) {
-  --mrt-first-tab-margin: calc(var(--menuWidth) + var(--mrt-workspace-button-width) + var(--densityGap));
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip:before {
   content: '';
-  width: var(--mrt-first-tab-margin);
+  width: var(--mrt-toolbar-before-width);
   display: block;
-  app-region: no-drag;
+  -webkit-app-region: no-drag;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #header .tabbar-wrapper {
@@ -190,14 +183,14 @@
   max-width: var(--mrt-max-width);
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > :is(span:last-of-type:not(:has(+ .tab-yield-space)), .tab-yield-space:not(:has(+ span))) {
-  margin-right: calc(var(--mrt-toolbar-width-full) + 2px);
+  margin-right: calc(var(--mrt-toolbar-after-width) + 2px);
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:last-of-type:has(+ .accordion-toggle-arrow) {
-  margin-right: calc(var(--mrt-toolbar-width-full) + 3px + 16px + var(--densityGap));
+  margin-right: calc(var(--mrt-toolbar-after-width) + 3px + 16px + var(--densityGap));
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > span:last-of-type + .accordion-toggle-arrow {
-  margin-left: calc(-1 * var(--mrt-toolbar-width-full) - 3px - 16px - var(--densityGap));
-  margin-right: calc(var(--mrt-toolbar-width-full) + 2px);
+  margin-left: calc(-1 * var(--mrt-toolbar-after-width) - 3px - 16px - var(--densityGap));
+  margin-right: calc(var(--mrt-toolbar-after-width) + 2px);
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer .tab-strip > :is(span:last-of-type:not(:has(+ .tab-yield-space)), .tab-yield-space:not(:has(+ span))) {
@@ -322,30 +315,61 @@
   justify-content: center;
 }
 
-/* Float toolbars */
+/* Toolbars */
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(1)) { --mrt-toolbar-after-btns: 1; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(2)) { --mrt-toolbar-after-btns: 2; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(3)) { --mrt-toolbar-after-btns: 3; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(4)) { --mrt-toolbar-after-btns: 4; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(5)) { --mrt-toolbar-after-btns: 5; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(6)) { --mrt-toolbar-after-btns: 6; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(7)) { --mrt-toolbar-after-btns: 7; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(8)) { --mrt-toolbar-after-btns: 8; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(9)) { --mrt-toolbar-after-btns: 9; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(1 of .toolbar-divider)) { --mrt-toolbar-after-divs: 1; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(2 of .toolbar-divider)) { --mrt-toolbar-after-divs: 2; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > :nth-child(3 of .toolbar-divider)) { --mrt-toolbar-after-divs: 3; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(1)) { --mrt-toolbar-before-btns: 1; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(2)) { --mrt-toolbar-before-btns: 2; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(3)) { --mrt-toolbar-before-btns: 3; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(4)) { --mrt-toolbar-before-btns: 4; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(5)) { --mrt-toolbar-before-btns: 5; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(6)) { --mrt-toolbar-before-btns: 6; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(7)) { --mrt-toolbar-before-btns: 7; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(8)) { --mrt-toolbar-before-btns: 8; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(9)) { --mrt-toolbar-before-btns: 9; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(1 of .toolbar-divider)) { --mrt-toolbar-before-divs: 1; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(2 of .toolbar-divider)) { --mrt-toolbar-before-divs: 2; }
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > :nth-child(3 of .toolbar-divider)) { --mrt-toolbar-before-divs: 3; }
+
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-after > .tabbar-workspace-button) {
+  --mrt-toolbar-after-extra: calc(var(--mrt-workspace-button-width) - 30px + 2 * max(0px, var(--densityGap, 0px)))
+}
+#browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > .tabbar-workspace-button) {
+  --mrt-toolbar-before-extra: calc(var(--mrt-workspace-button-width) - 30px + 2 * max(0px, var(--densityGap, 0px)))
+}
+#browser:is(.tabs-top, .tabs-bottom) {
+  --mrt-toolbar-before-width: calc((var(--mrt-toolbar-before-btns, 0) * (30px + max(var(--densityGap), 1px))) -
+     (var(--mrt-toolbar-before-divs, 0) * 14px) + var(--mrt-toolbar-before-extra, 0px) + var(--menuWidth, 0px) + 2px);
+  --mrt-toolbar-after-width: calc((var(--mrt-toolbar-after-btns, 0) * (30px + max(var(--densityGap), 1px))) -
+     (var(--mrt-toolbar-after-divs, 0) * 14px) + var(--mrt-toolbar-after-extra, 0px));
+}
+#browser:is(.tabs-top, .tabs-bottom) .toolbar .toolbar-spacer-panel {
+  min-width: 30px;
+}
+#browser:is(.tabs-top, .tabs-bottom) .toolbar .toolbar-spacer-panel, .toolbar .toolbar-spacer {
+  flex-basis: 30px;
+}
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container {
   position: relative;
   min-height: var(--mrt-tab-height);
 }
-#browser:is(.tabs-top, .tabs-bottom) .tab-strip > .toolbar {
-  height: var(--mrt-tab-height) !important;
-  -webkit-app-region: drag;
-}
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip > .toolbar {
-  margin-left: calc(-1 * var(--mrt-toolbar-width-full) - 40px);
-  padding-right: var(--mrt-toolbar-width-full);
-}
-#browser:is(.tabs-top, .tabs-bottom) #tabs-subcontainer .tab-strip > .toolbar {
-  margin-left: -61px;
-  padding-right: 30px;
+#browser:is(.tabs-top, .tabs-bottom) .toolbar {
+  z-index: 1;
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar-before {
-  margin-right: -5px;
+  margin-right: calc(-1 * var(--mrt-toolbar-before-width));
   margin-top: 0;
   align-items: flex-start;
-}
-#browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar-before:has(> .tabbar-workspace-button) {
-  margin-right: calc(-1 * var(--mrt-first-tab-margin));
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.subcontainer-lock {
   height: var(--mrt-tab-height);
@@ -363,11 +387,12 @@
 #browser:is(.tabs-top, .tabs-bottom) .toolbar .tabbar-workspace-button {
   height: var(--mrt-tab-height);
 }
-#browser:is(.tabs-top):not(.horizontal-menu) .tabbar-workspace-button {
+#browser:is(.tabs-top):not(.horizontal-menu) .toolbar-tabbar-before {
   margin-left: calc(var(--menuWidth) + var(--densityGap) * 2);
+  min-width: 0;
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .toolbar-tabbar-after {
-  margin-left: calc(-1 * var(--mrt-toolbar-width-full) - 0px);
+  margin-left: calc(-1 * var(--mrt-toolbar-after-width) - 0px);
   padding-right: 0;
   align-items: flex-end;
 }
@@ -387,13 +412,10 @@
 #browser:is(.tabs-top) #tabs-subcontainer .toolbar button {
   height: calc(var(--mrt-tab-height) - 1px);
 }
-#browser:is(.tabs-top).density-on #tabs-subcontainer .toolbar {
+#browser:is(.tabs-top, .tabs-bottom).density-on #tabs-subcontainer .toolbar {
+  margin-top: auto;
   margin-bottom: var(--densityGap);
 }
-#browser:is(.tabs-bottom).density-on #tabs-subcontainer .toolbar {
-  margin-top: var(--densityGap);
-}
-
 /* Accordion tab stacks */
 #browser:is(.tabs-top, .tabs-bottom).accordion-tabs-on .svg-tab-stack {
   display: none;
@@ -466,21 +488,10 @@
 #browser:is(.tabs-top, .tabs-bottom) .tab-strip span:has(+ .accordion-toggle-arrow) {
   margin-right: calc(16px + max(2px, var(--densityGap) * 2));
 }
-
-/* To be able to drag the window need to add a margin to the right from the plus button. Its width depends on other buttons presence */
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container {
-  --mrt-toolbar-width-full: var(--mrt-toolbar-width);
-}
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize {
   padding-left: 1px;
   margin-right: 0;
   max-width: unset !important;
-}
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.button-toolbar.toggle-trash:not(.hidden), .button-toolbar.synced-tabs-button) {
-  --mrt-toolbar-width-full: calc(var(--mrt-toolbar-width) + 31px + var(--densityGap));
-}
-#browser:is(.tabs-top, .tabs-bottom) #tabs-container:has(.button-toolbar.toggle-trash:not(.hidden)):has(.button-toolbar.synced-tabs-button) {
-  --mrt-toolbar-width-full: calc(var(--mrt-toolbar-width) + 62px + var(--densityGap));
 }
 
 /* Disable window dragging while a tab tooltip is visible */
@@ -488,8 +499,7 @@
 #browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .button-toolbar button,
 #browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .button-toolbar,
 #browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) #tabs-container .tab-strip:after,
-#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .tab-strip,
-#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .tab-strip > .toolbar {
+#browser:is(.tabs-top, .tabs-bottom):has(> #vivaldi-tooltip > .tooltip) .tab-strip {
   -webkit-app-region: no-drag !important;
 }
 
@@ -503,14 +513,18 @@
   #browser:is(.tabs-top, .tabs-bottom) .tab-strip {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: calc((var(--mrt-tab-height) + 1px) * var(--mrt-max-rows));
-    --mrt-first-tab-margin: 0;
+    max-height: calc((var(--mrt-tab-height) + max(var(--densityGap, 0px), 1px)) * var(--mrt-max-rows));
+    --mrt-toolbar-before-width: 0;
+  }
+  #browser:is(.tabs-top, .tabs-bottom) .tab-strip > :last-child {
+    margin-right: 0 !important;
   }
   #browser:is(.tabs-top, .tabs-bottom) .toolbar.toolbar-tabbar-before {
     margin-right: 0;
-  }
-  #browser.tabs-top #tabs-container .toolbar-tabbar-after {
     margin-left: 0;
+  }
+  #browser:is(.tabs-top, .tabs-bottom) :is(.tab-strip, .resize) + .toolbar {
+    margin-left: 0 !important;
   }
   #browser:is(.tabs-top, .tabs-bottom) .tabbar-workspace-button {
     position: relative;
@@ -522,8 +536,8 @@
   #browser:is(.tabs-top) .tabbar-workspace-button {
     margin-left: 0 !important;
   }
-  #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize {
-    --mrt-toolbar-width-full: var(--mrt-toolbar-width) !important;
+  #browser.tabs-top.density-on .tab-wrapper:after {
+    height: 0 !important;
   }
 }
 
