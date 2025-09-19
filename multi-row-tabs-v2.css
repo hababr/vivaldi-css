@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2025.09.15
+ * Version 2025.09.19
  */
 
 /*******************
@@ -47,7 +47,8 @@
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .window-buttongroup button {
-    height: 100% !important;
+  height: 100% !important;
+  min-height: var(--mrt-tab-height);
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container {
@@ -353,6 +354,10 @@
   --mrt-toolbar-after-width: calc((var(--mrt-toolbar-after-btns, 0) * (30px + max(var(--densityGap), 1px))) -
      (var(--mrt-toolbar-after-divs, 0) * 14px) + var(--mrt-toolbar-after-extra, 0px));
 }
+#browser:is(.tabs-top, .tabs-bottom).horizontal-menu {
+  --mrt-toolbar-before-width: 0;
+}
+
 #browser:is(.tabs-top, .tabs-bottom) .toolbar .toolbar-spacer-panel {
   min-width: 30px;
 }
@@ -362,6 +367,10 @@
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container {
   position: relative;
   min-height: var(--mrt-tab-height);
+  padding-left: var(--densityGap);
+}
+#browser:is(.tabs-top, .tabs-bottom).horizontal-menu #tabs-container {
+  padding-right: var(--densityGap);
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar {
   z-index: 1;
@@ -370,6 +379,7 @@
   margin-right: calc(-1 * var(--mrt-toolbar-before-width));
   margin-top: 0;
   align-items: flex-start;
+  min-width: 0 !important;
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar-tabbar.subcontainer-lock {
   height: var(--mrt-tab-height);
