@@ -84,6 +84,7 @@
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip:before {
   content: '';
   width: var(--mrt-toolbar-before-width);
+  margin-right: calc(-1 * max(1px, var(--densityGap, 0px)));
   display: block;
   -webkit-app-region: no-drag;
 }
@@ -346,16 +347,16 @@
   --mrt-toolbar-after-extra: calc(var(--mrt-workspace-button-width) - 30px + 2 * max(0px, var(--densityGap, 0px)))
 }
 #browser:is(.tabs-top, .tabs-bottom):has(.toolbar-tabbar-before > .tabbar-workspace-button) {
-  --mrt-toolbar-before-extra: calc(var(--mrt-workspace-button-width) - 30px + 2 * max(0px, var(--densityGap, 0px)))
+  --mrt-toolbar-before-extra: calc(var(--mrt-workspace-button-width) - 30px + 0 * max(0px, var(--densityGap, 0px)))
 }
 #browser:is(.tabs-top, .tabs-bottom) {
-  --mrt-toolbar-before-width: calc((var(--mrt-toolbar-before-btns, 0) * (30px + max(var(--densityGap), 1px))) -
-     (var(--mrt-toolbar-before-divs, 0) * 14px) + var(--mrt-toolbar-before-extra, 0px) + var(--menuWidth, 0px) + 2px);
-  --mrt-toolbar-after-width: calc((var(--mrt-toolbar-after-btns, 0) * (30px + max(var(--densityGap), 1px))) -
+  --mrt-toolbar-before-width: calc(var(--mrt-toolbar-before-btns, 0) * (30px + max(var(--densityGap), 1px)) -
+     (var(--mrt-toolbar-before-divs, 0) * 14px) + var(--mrt-toolbar-before-extra, 0px) + var(--menuWidth, 0px) + 0px);
+  --mrt-toolbar-after-width: calc(var(--mrt-toolbar-after-btns, 0) * (30px + max(var(--densityGap), 1px)) -
      (var(--mrt-toolbar-after-divs, 0) * 14px) + var(--mrt-toolbar-after-extra, 0px));
 }
 #browser:is(.tabs-top, .tabs-bottom).horizontal-menu {
-  --mrt-toolbar-before-width: 0;
+  --menuWidth: 0px;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .toolbar .toolbar-spacer-panel {
@@ -370,7 +371,7 @@
   padding-left: var(--densityGap);
 }
 #browser:is(.tabs-top, .tabs-bottom).horizontal-menu #tabs-container {
-  padding-right: var(--densityGap);
+  padding-right: max(var(--densityGap), 2px);
 }
 #browser:is(.tabs-top, .tabs-bottom) .toolbar {
   z-index: 1;
