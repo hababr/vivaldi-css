@@ -258,6 +258,7 @@
   max-height: 100%;
   flex-basis: 100%;
   z-index: 20;
+  height: 100%;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab:not(.tab-accordion, .tab-in-accordion) ~ .svg-tab-stack,
