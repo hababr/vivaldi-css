@@ -55,8 +55,8 @@
   height: auto !important;
 }
 #browser.tabs-top.density-on #tabs-tabbar-container {
-  padding-top: var(--densityGap);
-  padding-bottom: var(--densityGap);
+  padding-top: var(--densityGap) !important;
+  padding-bottom: var(--densityGap) !important;
 }
 #browser.tabs-top.density-on #tabs-tabbar-container:has(#tabs-subcontainer) {
   padding-bottom: 0;
