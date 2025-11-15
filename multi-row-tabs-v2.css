@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2025.09.19
+ * Version 2025.11.15
  */
 
 /*******************
@@ -54,9 +54,9 @@
 #browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container {
   height: auto !important;
 }
-#browser.tabs-top.density-on #tabs-tabbar-container {
-  padding-top: var(--densityGap) !important;
-  padding-bottom: var(--densityGap) !important;
+#browser.tabs-top.density-on.maximized #tabs-tabbar-container {
+  padding-top: var(--densityGap);
+  padding-bottom: var(--densityGap);
 }
 #browser.tabs-top.density-on #tabs-tabbar-container:has(#tabs-subcontainer) {
   padding-bottom: 0;
