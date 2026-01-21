@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2025.11.15
+ * Version 2025.12.11
  */
 
 /*******************
@@ -73,8 +73,9 @@
 #browser:is(.tabs-top, .tabs-bottom).density-on #titlebar .vivaldi {
   left: var(--densityGap);
 }
-#browser:is(.tabs-top, .tabs-bottom).density-on #titlebar .vivaldi {
+#browser:is(.tabs-top, .tabs-bottom).density-on.maximized #titlebar .vivaldi {
   margin-top: var(--densityGap);
+  left: unset;
 }
 
 /* Margin for the first tab */
@@ -84,7 +85,6 @@
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .tab-strip:before {
   content: '';
   width: var(--mrt-toolbar-before-width);
-  margin-right: calc(-1 * max(1px, var(--densityGap, 0px)));
   display: block;
   -webkit-app-region: no-drag;
 }
@@ -400,8 +400,7 @@
   height: var(--mrt-tab-height);
 }
 #browser:is(.tabs-top):not(.horizontal-menu) .toolbar-tabbar-before {
-  margin-left: calc(var(--menuWidth) + var(--densityGap) * 2);
-  min-width: 0;
+  margin-left: calc(var(--menuWidth) + var(--densityGap));
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .toolbar-tabbar-after {
   margin-left: calc(-1 * var(--mrt-toolbar-after-width) - 0px);
@@ -501,9 +500,11 @@
   margin-right: calc(16px + max(2px, var(--densityGap) * 2));
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container .resize {
-  padding-left: 1px;
   margin-right: 0;
   max-width: unset !important;
+}
+#browser:is(.tabs-top, .tabs-bottom):not(.density-on) #tabs-container .resize {
+  padding-left: 1px;
 }
 
 /* Disable window dragging while a tab tooltip is visible */
