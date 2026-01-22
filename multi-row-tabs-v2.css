@@ -1,6 +1,6 @@
 ﻿/*
  * Multiple Row Tabs v2 - Created by @hababr
- * Version 2025.12.11
+ * Version 2026.01.22
  */
 
 /*******************
@@ -46,9 +46,15 @@
   --mrt-toolbar-after-width: 0px;
 }
 
+#browser:is(.tabs-top, .tabs-bottom) .window-buttongroup {
+  height: var(--mrt-tab-height) !important;
+}
+#browser:is(.tabs-top, .tabs-bottom) .topmenu .window-buttongroup {
+  max-height: 100%;
+}
 #browser:is(.tabs-top, .tabs-bottom) .window-buttongroup button {
   height: 100% !important;
-  min-height: var(--mrt-tab-height);
+  min-height: min(100%, var(--mrt-tab-height));
 }
 
 #browser:is(.tabs-top, .tabs-bottom) #tabs-tabbar-container {
@@ -62,18 +68,18 @@
   padding-bottom: 0;
 }
 #browser.tabs-top.address-top.win:not(.fullscreen, .disable-titlebar) #header {
-    min-height: calc((var(--mrt-tab-height) + var(--densityGap) * 2) / var(--uiZoomLevel));
+  min-height: calc((var(--mrt-tab-height) + var(--densityGap) * 2) / var(--uiZoomLevel));
 }
-#browser:is(.tabs-top, .tabs-bottom):not(.horizontal-menu) #titlebar > * {
-    height: var(--mrt-tab-height);
-}
-#browser:is(.tabs-top, .tabs-bottom) #titlebar .vivaldi {
+#browser:is(.tabs-top, .tabs-bottom) .vivaldi {
+  position: absolute;
+  height: var(--mrt-tab-height);
   left: 1px;
 }
-#browser:is(.tabs-top, .tabs-bottom).density-on #titlebar .vivaldi {
+#browser:is(.tabs-top, .tabs-bottom).density-on .vivaldi {
   left: var(--densityGap);
+  margin-top: calc(2 * var(--densityGap));
 }
-#browser:is(.tabs-top, .tabs-bottom).density-on.maximized #titlebar .vivaldi {
+#browser:is(.tabs-top, .tabs-bottom).density-on.maximized .vivaldi {
   margin-top: var(--densityGap);
   left: unset;
 }
@@ -367,7 +373,6 @@
   flex-basis: 30px;
 }
 #browser:is(.tabs-top, .tabs-bottom) #tabs-container {
-  position: relative;
   min-height: var(--mrt-tab-height);
   padding-left: var(--densityGap);
 }
