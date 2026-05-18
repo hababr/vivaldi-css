@@ -251,10 +251,13 @@
   width: 100%;
   max-width: 100% !important;
   height: var(--mrt-tab-height) !important;
+  max-height: unset;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .tab-position .tab .tab-header {
   padding-left: 6px;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
 }
 
 #browser:is(.tabs-top, .tabs-bottom) .svg-tab-selection,
